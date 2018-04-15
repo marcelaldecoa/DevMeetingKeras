@@ -18,7 +18,7 @@
             "value": "DeepLearningLab-vnet"
         },
         "networkInterfaceName": {
-            "value": "deeplearninglab-linu851"
+            "value": "deeplearninglab-linuxVM-nic"
         },
         "networkSecurityGroupName": {
             "value": "DeepLearningLab-LinuxVM-nsg"
