@@ -2,6 +2,6 @@
 
 (*) Create a [Linux VM](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/quick-create-portal) with [GPU in Azure](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/sizes-gpu). For this DevMeeting we are going to use the NC-series VMs powered by the [NVIDIA Tesla K80](http://images.nvidia.com/content/pdf/kepler/Tesla-K80-BoardSpec-07317-001-v05.pdf) card. You choose the **Standard NC6 (6 vcpus, 56 GB memory)**, disk type *HDD*, *East US* and [attach](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/attach-disk-portal) an extra **data disk** to store the datasets we are going to use in the labs. Also don't forget to enable **auto-shutdown**.
 
-(*) You can generate the SSH key using [PuTTYgen](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html). More about SSH keys to connect to Linux virtual machines in Azure [here](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/ssh-from-windows)
+(*) You can generate the SSH key using [PuTTYgen](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html). More about SSH keys to connect to Linux virtual machines in Azure [here](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/ssh-from-windows).
 
 ## Download and Install Anaconda for Python 3.6
