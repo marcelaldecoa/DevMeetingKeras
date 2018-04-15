@@ -2,65 +2,32 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "location": {
-            "value": "eastus"
+        "virtualNetworks_DeepLearningLab_vnet_name": {
+            "value": null
         },
-        "virtualMachineName": {
-            "value": "DeepLearningLab-LinuxVM"
+        "storageAccounts_deeplearninglabdisks_name": {
+            "value": null
         },
-        "virtualMachineSize": {
-            "value": "Standard_NC6"
+        "virtualMachines_DeepLearningLab_LinuxVM_name": {
+            "value": null
         },
-        "adminUsername": {
-            "value": "<<YOUR USER NAME>>"
+        "publicIPAddresses_DeepLearningLab_LinuxVM_ip_name": {
+            "value": null
         },
-        "virtualNetworkName": {
-            "value": "DeepLearningLab-vnet"
+        "networkInterfaces_deeplearninglab_linuxVM_nic_name": {
+            "value": null
         },
-        "networkInterfaceName": {
-            "value": "deeplearninglab-linuxVM-nic"
+        "networkSecurityGroups_DeepLearningLab_LinuxVM_nsg_name": {
+            "value": null
         },
-        "networkSecurityGroupName": {
-            "value": "DeepLearningLab-LinuxVM-nsg"
+        "subnets_default_name": {
+            "value": null
         },
-        "adminPublicKey": {
-            "value": "<<YOUR SSH KEY>>"
+        "schedules_shutdown_computevm_deeplearninglab_linuxvm_name": {
+            "value": null
         },
-        "storageAccountName": {
-            "value": "deeplearninglabdisks"
-        },
-        "storageAccountType": {
-            "value": "Standard_LRS"
-        },
-        "addressPrefix": {
-            "value": "10.0.0.0/24"
-        },
-        "subnetName": {
-            "value": "default"
-        },
-        "subnetPrefix": {
-            "value": "10.0.0.0/24"
-        },
-        "publicIpAddressName": {
-            "value": "DeepLearningLab-LinuxVM-ip"
-        },
-        "publicIpAddressType": {
-            "value": "<<CHOOSE BETWEEN Static|Dynamic>>"
-        },
-        "publicIpAddressSku": {
-            "value": "Basic"
-        },
-        "autoShutdownStatus": {
-            "value": "Enabled"
-        },
-        "autoShutdownTime": {
-            "value": "02:00"
-        },
-        "autoShutdownTimeZone": {
-            "value": "E. South America Standard Time"
-        },
-        "autoShutdownNotificationStatus": {
-            "value": "Disabled"
+        "securityRules_default_allow_ssh_name": {
+            "value": null
         }
     }
 }
