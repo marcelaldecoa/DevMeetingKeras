@@ -4,4 +4,6 @@
 
 (*) You can generate the SSH key using [PuTTYgen](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html). More about SSH keys to connect to Linux virtual machines in Azure [here](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/ssh-from-windows).
 
+(*) A [template](https://github.com/marcelaldecoa/DevMeetingKeras/blob/master/DeployVM/template.json) for this VM is also available. Just update the [parameters.json](https://github.com/marcelaldecoa/DevMeetingKeras/blob/master/DeployVM/parameters.json) file with your username and SSH key. This template uses static public IP. You can change that as well.
+
 ## Download and Install Anaconda for Python 3.6
