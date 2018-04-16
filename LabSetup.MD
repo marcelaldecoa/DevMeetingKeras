@@ -29,3 +29,12 @@ Follow the instructions from [here](https://help.github.com/articles/generating-
  git clone git@github.com:marcelaldecoa/DevMeetingKeras.git
  
  ```
+## Configure Anaconda and CUDA
+
+Run the bash script [setup.sh](https://github.com/marcelaldecoa/DevMeetingKeras/blob/master/setup.sh)
+
+```
+.\setup.sh
+
+```
+
