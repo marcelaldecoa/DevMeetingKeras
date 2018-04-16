@@ -8,4 +8,4 @@
 
 ## Configure the Data Disk
 
-If you have not used the Azure [template](https://github.com/marcelaldecoa/DevMeetingKeras/blob/master/DeployVM/template.json) to create the new VM, you can use the file [configuredatadisk.sh](https://github.com/marcelaldecoa/DevMeetingKeras/blob/master/configdatadisk.sh) to create the partition and mount it to a the folder **/DeepLearningLab**.
+If you have not used the Azure [template](https://github.com/marcelaldecoa/DevMeetingKeras/blob/master/DeployVM/template.json) to create the new VM, you can use the file [configuredatadisk.sh](https://github.com/marcelaldecoa/DevMeetingKeras/blob/master/configdatadisk.sh) to create the partition and mount it to the folder **/DeepLearningLab**, the folder we will be using during the labs.
