@@ -23,9 +23,9 @@ Follow the instructions from [here](https://help.github.com/articles/generating-
 
 ```
  cd /DeepLearningLab
- sudo mkdir DevProjects
- sudo chown maalde -R ./DevProjects/
- cd DevProjects
+ sudo mkdir deep-learning-projects
+ sudo chown maalde -R ./deep-learning-projects/
+ cd deep-learning-projects
  git clone git@github.com:marcelaldecoa/DevMeetingKeras.git
  
  ```
