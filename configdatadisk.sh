@@ -10,7 +10,7 @@ echo w # Write changes
 ) | sudo fdisk /dev/sdc
 
 # Write the file system
-sudo mkfs -t /dev/sdc1
+sudo mkfs -t ext4 /dev/sdc1
 
 # Create the DeepLearningLab directory
 sudo mkdir /DeepLearningLab
