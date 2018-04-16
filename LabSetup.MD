@@ -6,4 +6,6 @@
 
 (*) A [template](https://github.com/marcelaldecoa/DevMeetingKeras/blob/master/DeployVM/template.json) for this VM is also available. Just update the [parameters.json](https://github.com/marcelaldecoa/DevMeetingKeras/blob/master/DeployVM/parameters.json) file with your username and SSH key. This template uses static public IP. You can change that as well.
 
-## Download and Install Anaconda for Python 3.6
+## Configure the Data Disk
+
+If you have not used the Azure [template](https://github.com/marcelaldecoa/DevMeetingKeras/blob/master/DeployVM/template.json) to create the new VM, you can use the file [configuredatadisk.sh](https://github.com/marcelaldecoa/DevMeetingKeras/blob/master/configuredatadisk.sh) to create the partition and mount it to a the folder **/DeepLearningLab**.
