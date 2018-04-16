@@ -6,6 +6,19 @@
 
 (*) A [template](https://github.com/marcelaldecoa/DevMeetingKeras/blob/master/DeployVM/template.json) for this VM is also available. Just update the [parameters.json](https://github.com/marcelaldecoa/DevMeetingKeras/blob/master/DeployVM/parameters.json) file with your username and SSH key. This template uses static public IP. You can change that as well.
 
+## Connect to the VM
+
+You can connect to the VM using [PuTTY](https://www.putty.org/).
+
+
 ## Configure the Data Disk
 
-If you have not used the Azure [template](https://github.com/marcelaldecoa/DevMeetingKeras/blob/master/DeployVM/template.json) to create the new VM, you can use the file [configuredatadisk.sh](https://github.com/marcelaldecoa/DevMeetingKeras/blob/master/configdatadisk.sh) to create the partition and mount it to the folder **/DeepLearningLab**, the folder we will be using during the labs.
+If you haven't used the Azure [template](https://github.com/marcelaldecoa/DevMeetingKeras/blob/master/DeployVM/template.json) to create the new VM, you can use the file [configuredatadisk.sh](https://github.com/marcelaldecoa/DevMeetingKeras/blob/master/configdatadisk.sh) as a reference to create the partition and mount it to the folder **/DeepLearningLab**, the folder we will be using during the labs.
+
+## Clone this Repository
+
+```
+ cd /DeepLearningLab
+ git clone https://github.com/marcelaldecoa/DevMeetingKeras.git
+ 
+ ```
