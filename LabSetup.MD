@@ -15,6 +15,10 @@ You can connect to the VM using [PuTTY](https://www.putty.org/).
 
 If you haven't used the Azure [template](https://github.com/marcelaldecoa/DevMeetingKeras/blob/master/DeployVM/template.json) to create the new VM, you can use the file [configuredatadisk.sh](https://github.com/marcelaldecoa/DevMeetingKeras/blob/master/configdatadisk.sh) as a reference to create the partition and mount it to the folder **/DeepLearningLab**, the folder we will be using during the labs.
 
+## Add a SSH key to GibHub
+
+Follow the instructions from [here](https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/) to generate a SSH key and from [here](https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/) to include it to your GitHub.
+
 ## Clone this Repository
 
 ```
