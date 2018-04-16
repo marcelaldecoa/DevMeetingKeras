@@ -1,56 +1,106 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "virtualNetworks_DeepLearningLab_vnet_name": {
-            "defaultValue": "DeepLearningLab-vnet",
-            "type": "String"
+        "location": {
+            "type": "string"
         },
-        "storageAccounts_deeplearninglabdisks_name": {
-            "defaultValue": "deeplearninglabdisks",
-            "type": "String"
+        "virtualMachineName": {
+            "type": "string"
         },
-        "virtualMachines_DeepLearningLab_LinuxVM_name": {
-            "defaultValue": "DeepLearningLab-LinuxVM",
-            "type": "String"
+        "virtualMachineSize": {
+            "type": "string"
         },
-        "publicIPAddresses_DeepLearningLab_LinuxVM_ip_name": {
-            "defaultValue": "DeepLearningLab-LinuxVM-ip",
-            "type": "String"
+        "adminUsername": {
+            "type": "string"
         },
-        "networkInterfaces_deeplearninglab_linuxVM_nic_name": {
-            "defaultValue": "deeplearninglab-linuxVM-nic",
-            "type": "String"
+        "virtualNetworkName": {
+            "type": "string"
         },
-        "networkSecurityGroups_DeepLearningLab_LinuxVM_nsg_name": {
-            "defaultValue": "DeepLearningLab-LinuxVM-nsg",
-            "type": "String"
+        "networkInterfaceName": {
+            "type": "string"
         },
-        "subnets_default_name": {
-            "defaultValue": "default",
-            "type": "String"
+        "networkSecurityGroupName": {
+            "type": "string"
         },
-        "schedules_shutdown_computevm_deeplearninglab_linuxvm_name": {
-            "defaultValue": "shutdown-computevm-deeplearninglab-linuxvm",
-            "type": "String"
+        "adminPublicKey": {
+            "type": "string"
         },
-        "securityRules_default_allow_ssh_name": {
-            "defaultValue": "default-allow-ssh",
-            "type": "String"
+        "storageAccountName": {
+            "type": "string"
+        },
+        "storageAccountType": {
+            "type": "string"
+        },
+        "addressPrefix": {
+            "type": "string"
+        },
+        "subnetName": {
+            "type": "string"
+        },
+        "subnetPrefix": {
+            "type": "string"
+        },
+        "publicIpAddressName": {
+            "type": "string"
+        },
+        "publicIpAddressType": {
+            "type": "string"
+        },
+        "publicIpAddressSku": {
+            "type": "string"
+        },
+        "autoShutdownStatus": {
+            "type": "string"
+        },
+        "autoShutdownTime": {
+            "type": "string"
+        },
+        "autoShutdownTimeZone": {
+            "type": "string"
+        },
+        "autoShutdownNotificationStatus": {
+            "type": "string"
+        },
+        "sizeOfOSDiskInGB": {
+            "type": "string"
+        },
+        "sizeOfDataDiskInGB": {
+            "type": "string"
         }
     },
-    "variables": {},
+    "variables": {
+        "vnetId": "[resourceId('DeepLearningLab','Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
+        "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]"
+    },
     "resources": [
         {
-            "comments": "Generalized from resource: '/subscriptions/253cf321-f164-48c8-9e2e-43ef36a1aa6a/resourceGroups/DeepLearningLab/providers/Microsoft.Compute/virtualMachines/DeepLearningLab-LinuxVM'.",
+            "name": "[parameters('virtualMachineName')]",
             "type": "Microsoft.Compute/virtualMachines",
-            "name": "[parameters('virtualMachines_DeepLearningLab_LinuxVM_name')]",
             "apiVersion": "2017-03-30",
-            "location": "eastus",
-            "scale": null,
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/networkInterfaces/', parameters('networkInterfaceName'))]",
+                "[concat('Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]"
+            ],
             "properties": {
+                "osProfile": {
+                    "computerName": "[parameters('virtualMachineName')]",
+                    "adminUsername": "[parameters('adminUsername')]",
+                    "linuxConfiguration": {
+                        "disablePasswordAuthentication": "true",
+                        "ssh": {
+                            "publicKeys": [
+                                {
+                                    "path": "[concat('/home/', parameters('adminUsername'), '/.ssh/authorized_keys')]",
+                                    "keyData": "[parameters('adminPublicKey')]"
+                                }
+                            ]
+                        }
+                    }
+                },
                 "hardwareProfile": {
-                    "vmSize": "Standard_NC6"
+                    "vmSize": "[parameters('virtualMachineSize')]"
                 },
                 "storageProfile": {
                     "imageReference": {
@@ -61,416 +111,158 @@
                     },
                     "osDisk": {
                         "osType": "Linux",
-                        "name": "[parameters('virtualMachines_DeepLearningLab_LinuxVM_name')]",
+                        "name": "[parameters('virtualMachineName')]",
                         "createOption": "FromImage",
                         "vhd": {
-                            "uri": "[concat('https', '://', parameters('storageAccounts_deeplearninglabdisks_name'), '.blob.core.windows.net', concat('/vhds/', parameters('virtualMachines_DeepLearningLab_LinuxVM_name'),'20180415185036.vhd'))]"
+                            "uri": "[concat('https', '://', parameters('storageAccountName'), '.blob.core.windows.net', concat('/vhds/', parameters('virtualMachineName'),'-OSDisk.vhd'))]"
                         },
                         "caching": "ReadWrite",
-                        "diskSizeGB": 30
+                        "diskSizeGB": "[parameters('sizeOfOSDiskInGB')]"
                     },
                     "dataDisks": [
                         {
                             "lun": 0,
-                            "name": "[concat(parameters('virtualMachines_DeepLearningLab_LinuxVM_name'),'-DataDisk')]",
+                            "name": "[concat(parameters('virtualMachineName'),'-DataDisk')]",
                             "createOption": "Empty",
                             "vhd": {
-                                "uri": "[concat('https', '://', parameters('storageAccounts_deeplearninglabdisks_name'), '.blob.core.windows.net', concat('/data/', parameters('virtualMachines_DeepLearningLab_LinuxVM_name'),'-DataDisk.vhd'))]"
+                                "uri": "[concat('https', '://', parameters('storageAccountName'), '.blob.core.windows.net', concat('/data/', parameters('virtualMachineName'),'-DataDisk.vhd'))]"
                             },
                             "caching": "None",
-                            "diskSizeGB": 1023
+                            "diskSizeGB": "[parameters('sizeOfDataDiskInGB')]"
                         }
                     ]
-                },
-                "osProfile": {
-                    "computerName": "[parameters('virtualMachines_DeepLearningLab_LinuxVM_name')]",
-                    "adminUsername": "maalde",
-                    "linuxConfiguration": {
-                        "disablePasswordAuthentication": true,
-                        "ssh": {
-                            "publicKeys": [
-                                {
-                                    "path": "/home/maalde/.ssh/authorized_keys",
-                                    "keyData": "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAiRqyi/2ca/Tb55DgusOzgTP2Geqt50flcG8snsuEohZCF5ff64dfVBnbXxOgXQrRkZFuVJkbih8ky8yZYiLZTHqmc9MSLdZWPDbKTKifKgnEOPkU3NmXQRo3KH9KBFJ3uUQyVXTTCTGNWLf37PHrGRo6c8j5jZcK8Hj3Ya8eUDurqXfezvMTsVoMmgwsUN2x+ZuWK6gpOPRYQNK8DtTjBQs7DfWwnO5XcRrtt2HWL6SgM5R5YjL4eMg69D8Kj+lZ5NYsDzj87OtmmyF7y/YdT+xgphZHAJXt2m290hvQpWtskVsSjBuimvgt+eWg34jiv19ADkZUrw2MeKfq3g/Q7w=="
-                                }
-                            ]
-                        }
-                    },
-                    "secrets": []
                 },
                 "networkProfile": {
                     "networkInterfaces": [
                         {
-                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_deeplearninglab_linuxVM_nic_name'))]"
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaceName'))]"
                         }
                     ]
                 }
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_deeplearninglabdisks_name'))]",
-                "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_deeplearninglab_linuxVM_nic_name'))]"
-            ]
+            }
         },
         {
-            "comments": "Generalized from resource: '/subscriptions/253cf321-f164-48c8-9e2e-43ef36a1aa6a/resourcegroups/deeplearninglab/providers/microsoft.devtestlab/schedules/shutdown-computevm-deeplearninglab-linuxvm'.",
-            "type": "microsoft.devtestlab/schedules",
-            "name": "[parameters('schedules_shutdown_computevm_deeplearninglab_linuxvm_name')]",
-            "apiVersion": "2016-05-15",
-            "location": "eastus",
-            "scale": null,
+            "name": "[concat('shutdown-computevm-', parameters('virtualMachineName'))]",
+            "type": "Microsoft.DevTestLab/schedules",
+            "apiVersion": "2017-04-26-preview",
+            "location": "[parameters('location')]",
             "properties": {
-                "status": "Enabled",
+                "status": "[parameters('autoShutdownStatus')]",
                 "taskType": "ComputeVmShutdownTask",
                 "dailyRecurrence": {
-                    "time": "0200"
+                    "time": "[parameters('autoShutdownTime')]"
                 },
-                "timeZoneId": "E. South America Standard Time",
+                "timeZoneId": "[parameters('autoShutdownTimeZone')]",
+                "targetResourceId": "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachineName'))]",
                 "notificationSettings": {
-                    "status": "Disabled",
-                    "timeInMinutes": 30
-                },
-                "targetResourceId": "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachines_DeepLearningLab_LinuxVM_name'))]",
-                "provisioningState": "Succeeded",
-                "uniqueIdentifier": "47748bb3-a0d3-4635-8e77-6844ec509231"
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachines_DeepLearningLab_LinuxVM_name'))]"
-            ]
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/253cf321-f164-48c8-9e2e-43ef36a1aa6a/resourceGroups/DeepLearningLab/providers/Microsoft.Network/networkInterfaces/deeplearninglab-linuxVM-nic'.",
-            "type": "Microsoft.Network/networkInterfaces",
-            "name": "[parameters('networkInterfaces_deeplearninglab_linuxVM_nic_name')]",
-            "apiVersion": "2018-01-01",
-            "location": "eastus",
-            "scale": null,
-            "properties": {
-                "provisioningState": "Succeeded",
-                "resourceGuid": "43d592aa-8783-4ace-864b-939f54ba3558",
-                "ipConfigurations": [
-                    {
-                        "name": "ipconfig1",
-                        "etag": "W/\"f01fb8c3-1778-427d-8f03-73aa6cfc1215\"",
-                        "properties": {
-                            "provisioningState": "Succeeded",
-                            "privateIPAddress": "10.0.0.4",
-                            "privateIPAllocationMethod": "Dynamic",
-                            "publicIPAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_DeepLearningLab_LinuxVM_ip_name'))]"
-                            },
-                            "subnet": {
-                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_DeepLearningLab_vnet_name'), parameters('subnets_default_name'))]"
-                            },
-                            "primary": true,
-                            "privateIPAddressVersion": "IPv4"
-                        }
-                    }
-                ],
-                "dnsSettings": {
-                    "dnsServers": [],
-                    "appliedDnsServers": [],
-                    "internalDomainNameSuffix": "mp4lothb2uaehp3vsvut11mvzc.bx.internal.cloudapp.net"
-                },
-                "macAddress": "00-0D-3A-1C-EC-E8",
-                "enableAcceleratedNetworking": false,
-                "enableIPForwarding": false,
-                "networkSecurityGroup": {
-                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_DeepLearningLab_LinuxVM_nsg_name'))]"
-                },
-                "primary": true,
-                "virtualMachine": {
-                    "id": "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachines_DeepLearningLab_LinuxVM_name'))]"
+                    "status": "[parameters('autoShutdownNotificationStatus')]",
+                    "timeInMinutes": "30"
                 }
             },
             "dependsOn": [
-                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_DeepLearningLab_LinuxVM_ip_name'))]",
-                "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_DeepLearningLab_vnet_name'), parameters('subnets_default_name'))]",
-                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_DeepLearningLab_LinuxVM_nsg_name'))]",
-                "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachines_DeepLearningLab_LinuxVM_name'))]"
+                "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'))]"
             ]
         },
         {
-            "comments": "Generalized from resource: '/subscriptions/253cf321-f164-48c8-9e2e-43ef36a1aa6a/resourceGroups/DeepLearningLab/providers/Microsoft.Network/networkSecurityGroups/DeepLearningLab-LinuxVM-nsg'.",
-            "type": "Microsoft.Network/networkSecurityGroups",
-            "name": "[parameters('networkSecurityGroups_DeepLearningLab_LinuxVM_nsg_name')]",
-            "apiVersion": "2018-01-01",
-            "location": "eastus",
-            "scale": null,
+            "name": "[parameters('storageAccountName')]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2015-06-15",
+            "location": "[parameters('location')]",
             "properties": {
-                "provisioningState": "Succeeded",
-                "resourceGuid": "cc1391bb-73d1-4853-b3c1-7121b7911899",
-                "securityRules": [
-                    {
-                        "name": "default-allow-ssh",
-                        "etag": "W/\"ff18691f-afb8-4e05-8c7c-0bab24de3c4d\"",
-                        "properties": {
-                            "provisioningState": "Succeeded",
-                            "protocol": "TCP",
-                            "sourcePortRange": "*",
-                            "destinationPortRange": "22",
-                            "sourceAddressPrefix": "*",
-                            "destinationAddressPrefix": "*",
-                            "access": "Allow",
-                            "priority": 1000,
-                            "direction": "Inbound",
-                            "sourcePortRanges": [],
-                            "destinationPortRanges": [],
-                            "sourceAddressPrefixes": [],
-                            "destinationAddressPrefixes": []
-                        }
-                    }
-                ],
-                "defaultSecurityRules": [
-                    {
-                        "name": "AllowVnetInBound",
-                        "etag": "W/\"ff18691f-afb8-4e05-8c7c-0bab24de3c4d\"",
-                        "properties": {
-                            "provisioningState": "Succeeded",
-                            "description": "Allow inbound traffic from all VMs in VNET",
-                            "protocol": "*",
-                            "sourcePortRange": "*",
-                            "destinationPortRange": "*",
-                            "sourceAddressPrefix": "VirtualNetwork",
-                            "destinationAddressPrefix": "VirtualNetwork",
-                            "access": "Allow",
-                            "priority": 65000,
-                            "direction": "Inbound",
-                            "sourcePortRanges": [],
-                            "destinationPortRanges": [],
-                            "sourceAddressPrefixes": [],
-                            "destinationAddressPrefixes": []
-                        }
-                    },
-                    {
-                        "name": "AllowAzureLoadBalancerInBound",
-                        "etag": "W/\"ff18691f-afb8-4e05-8c7c-0bab24de3c4d\"",
-                        "properties": {
-                            "provisioningState": "Succeeded",
-                            "description": "Allow inbound traffic from azure load balancer",
-                            "protocol": "*",
-                            "sourcePortRange": "*",
-                            "destinationPortRange": "*",
-                            "sourceAddressPrefix": "AzureLoadBalancer",
-                            "destinationAddressPrefix": "*",
-                            "access": "Allow",
-                            "priority": 65001,
-                            "direction": "Inbound",
-                            "sourcePortRanges": [],
-                            "destinationPortRanges": [],
-                            "sourceAddressPrefixes": [],
-                            "destinationAddressPrefixes": []
-                        }
-                    },
-                    {
-                        "name": "DenyAllInBound",
-                        "etag": "W/\"ff18691f-afb8-4e05-8c7c-0bab24de3c4d\"",
-                        "properties": {
-                            "provisioningState": "Succeeded",
-                            "description": "Deny all inbound traffic",
-                            "protocol": "*",
-                            "sourcePortRange": "*",
-                            "destinationPortRange": "*",
-                            "sourceAddressPrefix": "*",
-                            "destinationAddressPrefix": "*",
-                            "access": "Deny",
-                            "priority": 65500,
-                            "direction": "Inbound",
-                            "sourcePortRanges": [],
-                            "destinationPortRanges": [],
-                            "sourceAddressPrefixes": [],
-                            "destinationAddressPrefixes": []
-                        }
-                    },
-                    {
-                        "name": "AllowVnetOutBound",
-                        "etag": "W/\"ff18691f-afb8-4e05-8c7c-0bab24de3c4d\"",
-                        "properties": {
-                            "provisioningState": "Succeeded",
-                            "description": "Allow outbound traffic from all VMs to all VMs in VNET",
-                            "protocol": "*",
-                            "sourcePortRange": "*",
-                            "destinationPortRange": "*",
-                            "sourceAddressPrefix": "VirtualNetwork",
-                            "destinationAddressPrefix": "VirtualNetwork",
-                            "access": "Allow",
-                            "priority": 65000,
-                            "direction": "Outbound",
-                            "sourcePortRanges": [],
-                            "destinationPortRanges": [],
-                            "sourceAddressPrefixes": [],
-                            "destinationAddressPrefixes": []
-                        }
-                    },
-                    {
-                        "name": "AllowInternetOutBound",
-                        "etag": "W/\"ff18691f-afb8-4e05-8c7c-0bab24de3c4d\"",
-                        "properties": {
-                            "provisioningState": "Succeeded",
-                            "description": "Allow outbound traffic from all VMs to Internet",
-                            "protocol": "*",
-                            "sourcePortRange": "*",
-                            "destinationPortRange": "*",
-                            "sourceAddressPrefix": "*",
-                            "destinationAddressPrefix": "Internet",
-                            "access": "Allow",
-                            "priority": 65001,
-                            "direction": "Outbound",
-                            "sourcePortRanges": [],
-                            "destinationPortRanges": [],
-                            "sourceAddressPrefixes": [],
-                            "destinationAddressPrefixes": []
-                        }
-                    },
-                    {
-                        "name": "DenyAllOutBound",
-                        "etag": "W/\"ff18691f-afb8-4e05-8c7c-0bab24de3c4d\"",
-                        "properties": {
-                            "provisioningState": "Succeeded",
-                            "description": "Deny all outbound traffic",
-                            "protocol": "*",
-                            "sourcePortRange": "*",
-                            "destinationPortRange": "*",
-                            "sourceAddressPrefix": "*",
-                            "destinationAddressPrefix": "*",
-                            "access": "Deny",
-                            "priority": 65500,
-                            "direction": "Outbound",
-                            "sourcePortRanges": [],
-                            "destinationPortRanges": [],
-                            "sourceAddressPrefixes": [],
-                            "destinationAddressPrefixes": []
-                        }
-                    }
-                ]
-            },
-            "dependsOn": []
+                "accountType": "[parameters('storageAccountType')]"
+            }
         },
         {
-            "comments": "Generalized from resource: '/subscriptions/253cf321-f164-48c8-9e2e-43ef36a1aa6a/resourceGroups/DeepLearningLab/providers/Microsoft.Network/publicIPAddresses/DeepLearningLab-LinuxVM-ip'.",
-            "type": "Microsoft.Network/publicIPAddresses",
-            "sku": {
-                "name": "Basic",
-                "tier": "Regional"
-            },
-            "name": "[parameters('publicIPAddresses_DeepLearningLab_LinuxVM_ip_name')]",
-            "apiVersion": "2018-01-01",
-            "location": "eastus",
-            "scale": null,
-            "properties": {
-                "provisioningState": "Succeeded",
-                "resourceGuid": "470ad9df-1bf7-4fad-aa12-e138265aa75e",
-                "ipAddress": "52.168.167.66",
-                "publicIPAddressVersion": "IPv4",
-                "publicIPAllocationMethod": "Static",
-                "idleTimeoutInMinutes": 4,
-                "ipTags": []
-            },
-            "dependsOn": []
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/253cf321-f164-48c8-9e2e-43ef36a1aa6a/resourceGroups/DeepLearningLab/providers/Microsoft.Network/virtualNetworks/DeepLearningLab-vnet'.",
+            "name": "[parameters('virtualNetworkName')]",
             "type": "Microsoft.Network/virtualNetworks",
-            "name": "[parameters('virtualNetworks_DeepLearningLab_vnet_name')]",
-            "apiVersion": "2018-01-01",
-            "location": "eastus",
-            "scale": null,
+            "apiVersion": "2017-08-01",
+            "location": "[parameters('location')]",
             "properties": {
-                "provisioningState": "Succeeded",
-                "resourceGuid": "4cb7fc63-e5e1-4300-bfb5-95693ded95ca",
                 "addressSpace": {
                     "addressPrefixes": [
-                        "10.0.0.0/24"
+                        "[parameters('addressPrefix')]"
                     ]
                 },
                 "subnets": [
                     {
-                        "name": "default",
-                        "etag": "W/\"9e893c17-0be7-4d0d-af87-08cc8227c287\"",
+                        "name": "[parameters('subnetName')]",
                         "properties": {
-                            "provisioningState": "Succeeded",
-                            "addressPrefix": "10.0.0.0/24"
+                            "addressPrefix": "[parameters('subnetPrefix')]"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "[parameters('networkInterfaceName')]",
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2016-09-01",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
+                "[concat('Microsoft.Network/publicIpAddresses/', parameters('publicIpAddressName'))]",
+                "[concat('Microsoft.Network/networkSecurityGroups/', parameters('networkSecurityGroupName'))]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "subnet": {
+                                "id": "[variables('subnetRef')]"
+                            },
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIpAddress": {
+                                "id": "[resourceId('DeepLearningLab','Microsoft.Network/publicIpAddresses', parameters('publicIpAddressName'))]"
+                            }
                         }
                     }
                 ],
-                "virtualNetworkPeerings": [],
-                "enableDdosProtection": false,
-                "enableVmProtection": false
-            },
-            "dependsOn": []
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/253cf321-f164-48c8-9e2e-43ef36a1aa6a/resourceGroups/DeepLearningLab/providers/Microsoft.Storage/storageAccounts/deeplearninglabdisks'.",
-            "type": "Microsoft.Storage/storageAccounts",
-            "sku": {
-                "name": "Standard_LRS",
-                "tier": "Standard"
-            },
-            "kind": "Storage",
-            "name": "[parameters('storageAccounts_deeplearninglabdisks_name')]",
-            "apiVersion": "2017-10-01",
-            "location": "eastus",
-            "tags": {},
-            "scale": null,
-            "properties": {
-                "networkAcls": {
-                    "bypass": "AzureServices",
-                    "virtualNetworkRules": [],
-                    "ipRules": [],
-                    "defaultAction": "Allow"
-                },
-                "supportsHttpsTrafficOnly": false,
-                "encryption": {
-                    "services": {
-                        "file": {
-                            "enabled": true
-                        },
-                        "blob": {
-                            "enabled": true
-                        }
-                    },
-                    "keySource": "Microsoft.Storage"
+                "networkSecurityGroup": {
+                    "id": "[resourceId('DeepLearningLab', 'Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroupName'))]"
                 }
-            },
-            "dependsOn": []
+            }
         },
         {
-            "comments": "Generalized from resource: '/subscriptions/253cf321-f164-48c8-9e2e-43ef36a1aa6a/resourceGroups/DeepLearningLab/providers/Microsoft.Network/networkSecurityGroups/DeepLearningLab-LinuxVM-nsg/securityRules/default-allow-ssh'.",
-            "type": "Microsoft.Network/networkSecurityGroups/securityRules",
-            "name": "[concat(parameters('networkSecurityGroups_DeepLearningLab_LinuxVM_nsg_name'), '/', parameters('securityRules_default_allow_ssh_name'))]",
-            "apiVersion": "2018-01-01",
-            "scale": null,
+            "name": "[parameters('publicIpAddressName')]",
+            "type": "Microsoft.Network/publicIpAddresses",
+            "apiVersion": "2017-08-01",
+            "location": "[parameters('location')]",
             "properties": {
-                "provisioningState": "Succeeded",
-                "protocol": "TCP",
-                "sourcePortRange": "*",
-                "destinationPortRange": "22",
-                "sourceAddressPrefix": "*",
-                "destinationAddressPrefix": "*",
-                "access": "Allow",
-                "priority": 1000,
-                "direction": "Inbound",
-                "sourcePortRanges": [],
-                "destinationPortRanges": [],
-                "sourceAddressPrefixes": [],
-                "destinationAddressPrefixes": []
+                "publicIpAllocationMethod": "[parameters('publicIpAddressType')]"
             },
-            "dependsOn": [
-                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_DeepLearningLab_LinuxVM_nsg_name'))]"
-            ]
+            "sku": {
+                "name": "[parameters('publicIpAddressSku')]"
+            }
         },
         {
-            "comments": "Generalized from resource: '/subscriptions/253cf321-f164-48c8-9e2e-43ef36a1aa6a/resourceGroups/DeepLearningLab/providers/Microsoft.Network/virtualNetworks/DeepLearningLab-vnet/subnets/default'.",
-            "type": "Microsoft.Network/virtualNetworks/subnets",
-            "name": "[concat(parameters('virtualNetworks_DeepLearningLab_vnet_name'), '/', parameters('subnets_default_name'))]",
-            "apiVersion": "2018-01-01",
-            "scale": null,
+            "name": "[parameters('networkSecurityGroupName')]",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "apiVersion": "2017-06-01",
+            "location": "[parameters('location')]",
             "properties": {
-                "provisioningState": "Succeeded",
-                "addressPrefix": "10.0.0.0/24"
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_DeepLearningLab_vnet_name'))]"
-            ]
+                "securityRules": [
+                    {
+                        "name": "default-allow-ssh",
+                        "properties": {
+                            "priority": 1000,
+                            "protocol": "TCP",
+                            "access": "Allow",
+                            "direction": "Inbound",
+                            "sourceAddressPrefix": "*",
+                            "sourcePortRange": "*",
+                            "destinationAddressPrefix": "*",
+                            "destinationPortRange": "22"
+                        }
+                    }
+                ]
+            }
         }
-    ]
+    ],
+    "outputs": {
+        "adminUsername": {
+            "type": "string",
+            "value": "[parameters('adminUsername')]"
+        }
+    }
 }
