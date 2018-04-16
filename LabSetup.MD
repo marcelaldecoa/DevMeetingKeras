@@ -18,7 +18,7 @@ If you haven't used the Azure [template](https://github.com/marcelaldecoa/DevMee
 ## Clone this Repository
 
 ```
- cd /DeepLearningLab
- git clone https://github.com/marcelaldecoa/DevMeetingKeras.git
+ ~$ cd /DeepLearningLab
+ ~$ git clone https://github.com/marcelaldecoa/DevMeetingKeras.git
  
  ```
