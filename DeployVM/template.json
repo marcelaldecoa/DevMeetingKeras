@@ -67,6 +67,9 @@
         },
         "sizeOfDataDiskInGB": {
             "type": "string"
+        },
+        "customData": {
+            "type": "string",
         }
     },
     "variables": {
@@ -87,6 +90,7 @@
                 "osProfile": {
                     "computerName": "[parameters('virtualMachineName')]",
                     "adminUsername": "[parameters('adminUsername')]",
+                    "customData": "[base64(parameters('customData'))]",
                     "linuxConfiguration": {
                         "disablePasswordAuthentication": "true",
                         "ssh": {
@@ -111,7 +115,7 @@
                     },
                     "osDisk": {
                         "osType": "Linux",
-                        "name": "[parameters('virtualMachineName')]",
+                        "name": "[concat(parameters('virtualMachineName'),'-OSDisk')]",
                         "createOption": "FromImage",
                         "vhd": {
                             "uri": "[concat('https', '://', parameters('storageAccountName'), '.blob.core.windows.net', concat('/vhds/', parameters('virtualMachineName'),'-OSDisk.vhd'))]"
