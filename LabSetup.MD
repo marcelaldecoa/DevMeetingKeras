@@ -23,6 +23,8 @@ Follow the instructions from [here](https://help.github.com/articles/generating-
 
 ```
  cd /DeepLearningLab
- git clone https://github.com/marcelaldecoa/DevMeetingKeras.git
+ sudo chown maalde -R .
+ git clone git@github.com:marcelaldecoa/DevMeetingKeras.git
  
  ```
+ (*) Replace ***maalde*** by your username.
