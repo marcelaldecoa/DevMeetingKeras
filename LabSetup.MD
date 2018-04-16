@@ -21,7 +21,7 @@ Follow the instructions from [here](https://help.github.com/articles/generating-
 
 ## Clone this Repository
 
-```bash
+```console
  cd /DeepLearningLab
  sudo mkdir deep-learning-projects
  sudo chown $USER -R ./deep-learning-projects/
@@ -33,7 +33,7 @@ Follow the instructions from [here](https://help.github.com/articles/generating-
 
 Run the bash script [setup.sh](https://github.com/marcelaldecoa/DevMeetingKeras/blob/master/setup.sh).
 
-```bash
+```console
 cd DevMeetingKeras
 .\setup.sh
 
