@@ -1,5 +1,14 @@
 #!/bin/bash
+
 sudo -s
+
+#Update software repository
+apt-get update
+#Download useful packages
+apt-get install -y libatlas-base-dev libopencv-dev libprotoc-dev python-numpy python-scipy make unzip git gcc g++ libcurl4-openssl-dev libssl-dev
+#Upgrade all remaining packages
+apt-get upgrade
+
 mkdir -p /setup-dl-lab-temp
 cd /setup-dl-lab-temp
 wget https://repo.continuum.io/archive/Anaconda3-5.1.0-Linux-x86_64.sh
