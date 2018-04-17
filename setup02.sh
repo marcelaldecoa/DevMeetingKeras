@@ -16,7 +16,6 @@ rm -f ${ANACONDA_BASH_FILE}
 
 # Upgrade PIP
 printf "Upgrading ${BLUE}PIP${NC} ...\n"
-sudo -s
 pip install --upgrade pip
 
 # Install CUDA Toolkit 9.0
