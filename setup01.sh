@@ -5,9 +5,6 @@ RED='\033[0;31m'
 BLUE='\033[1;34m'
 NC='\033[0m' # No Color
 
-
-sudo -s
-
 # Update Software Repository
 printf "Updating ${GREEN}Software Repository${NC} ...\n"
 apt-get update
