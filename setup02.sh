@@ -9,17 +9,22 @@ source ~/.bashrc
 rm -f ${ANACONDA_BASH_FILE}
 
 # Install CUDA Toolkit 9.0
+sudo -s
 cd NVIDIA/
-CUDA_REPO_PKG=cuda-repo-ubuntu1604_9.0.176-1_amd64.deb
-wget ${CUDA_REPO_PKG} http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/${CUDA_REPO_PKG} 
-sudo dpkg -i ${CUDA_REPO_PKG}
-sudo apt-key add --fetch-keys http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/7fa2af80.pub 
-rm -f ${CUDA_REPO_PKG}
-sudo apt-get update
-sudo apt-get install cuda -y
-sudo reboot
+dpkg -i cuda-repo-ubuntu1604-9-0-local_9.0.176-1_amd64.deb
+apt-get update
+apt-get install cuda -y
+dpkg -i cuda-repo-ubuntu1604-9-0-local-cublas-performance-update-2_1.0-1_amd64.deb
+apt-get update
+apt-get upgrade cuda -y
 
+# Install cuDNN
+dpkg -i libcudnn7_7.1.3.16-1+cuda9.0_amd64.deb
+dpkg -i libcudnn7-dev_7.1.3.16-1+cuda9.0_amd64.deb
+dpkg -i libcudnn7-doc_7.1.3.16-1+cuda9.0_amd64.deb
 
-
-
-
+# Testing cuDNN
+cp -r /usr/src/cudnn_samples_v7/ $HOME
+cd  $HOME/cudnn_samples_v7/mnistCUDNN
+make clean && make
+./mnistCUDNN
