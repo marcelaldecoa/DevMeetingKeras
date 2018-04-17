@@ -22,9 +22,9 @@ apt-get update
 apt-get upgrade cuda -y
 
 # Install cuDNN
-dpkg -i libcudnn7_7.1.3.16-1+cuda9.0_amd64.deb
-dpkg -i libcudnn7-dev_7.1.3.16-1+cuda9.0_amd64.deb
-dpkg -i libcudnn7-doc_7.1.3.16-1+cuda9.0_amd64.deb
+dpkg -i libcudnn7_7.0.5.15-1+cuda9.0_amd64
+dpkg -i libcudnn7-dev_7.0.5.15-1+cuda9.0_amd64
+dpkg -i libcudnn7-doc_7.0.5.15-1+cuda9.0_amd64
 
 # Testing cuDNN
 cp -r /usr/src/cudnn_samples_v7/ $HOME
@@ -44,3 +44,9 @@ pip install numpy==1.13.0
 # Install Keras
 pip install h5py
 pip install keras
+
+# Testing Keras
+MNIST_FILE=mnist_cnn.py
+wgethttps://raw.githubusercontent.com/keras-team/keras/master/examples/${MNIST_FILE}
+python ${MNIST_FILE}
+rm -f ${MNIST_FILE}
