@@ -8,8 +8,11 @@ echo 'export PATH="$HOME/anaconda3/bin:$PATH"' >> ~/.bashrc
 source ~/.bashrc
 rm -f ${ANACONDA_BASH_FILE}
 
-# Install CUDA Toolkit 9.0
+# Upgrade PIP
 sudo -s
+pip install --upgrade pip
+
+# Install CUDA Toolkit 9.0
 cd NVIDIA/
 dpkg -i cuda-repo-ubuntu1604-9-0-local_9.0.176-1_amd64.deb
 apt-get update
@@ -28,3 +31,16 @@ cp -r /usr/src/cudnn_samples_v7/ $HOME
 cd  $HOME/cudnn_samples_v7/mnistCUDNN
 make clean && make
 ./mnistCUDNN
+cd ~
+
+# Install TensorFlow
+apt-get install libcupti-dev -y
+pip install tensorflow-gpu
+
+# FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated
+# Requires numpy downgrade
+pip install numpy==1.13.0
+
+# Install Keras
+pip install h5py
+pip install keras
