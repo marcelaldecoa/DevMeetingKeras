@@ -47,10 +47,3 @@ pip install tensorflow-gpu
 printf "Installing ${GREEN}Keras${NC} ...\n"
 pip install h5py
 pip install keras
-
-# Testing Keras
-printf "Testing ${BLUE}Keras with MNIST${NC} ...\n"
-MNIST_FILE=mnist_cnn.py
-wget https://raw.githubusercontent.com/keras-team/keras/master/examples/${MNIST_FILE}
-python ${MNIST_FILE}
-rm -f ${MNIST_FILE}
