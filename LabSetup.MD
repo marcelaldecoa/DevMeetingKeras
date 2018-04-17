@@ -37,7 +37,7 @@ Run the bash script [setup01.sh](https://github.com/marcelaldecoa/DevMeetingKera
 cd /DeepLearningLab/deep-learning-projects/DevMeetingKeras/
 sudo chmod +x setup01.sh
 sudo -s
-./setup01.sh
+bash setup01.sh
 ```
 After reboot run the bash script [setup02.sh](https://github.com/marcelaldecoa/DevMeetingKeras/blob/master/setup02.sh).
 
@@ -45,5 +45,5 @@ After reboot run the bash script [setup02.sh](https://github.com/marcelaldecoa/D
 cd /DeepLearningLab/deep-learning-projects/DevMeetingKeras/
 sudo chmod +x setup02.sh
 sudo -s
-./setup02.sh
+bash setup02.sh
 ```
