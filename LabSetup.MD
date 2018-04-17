@@ -35,6 +35,9 @@ Run the bash script [setup.sh](https://github.com/marcelaldecoa/DevMeetingKeras/
 
 ```bash
 cd DevMeetingKeras
-.\setup.sh
+sudo chmod +x setup01.sh
+sudo chmod +x setup02.sh
 
+sudo -s
+./setup01.sh
 ```
