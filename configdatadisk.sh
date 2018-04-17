@@ -17,3 +17,6 @@ sudo mkdir /DeepLearningLab
 
 # Mount disk to the new directory
 sudo mount /dev/sdc1 /DeepLearningLab
+sudo -s
+uuid=$(sudo -i blkid /dev/sdc1 | grep -oP "[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}")
+echo UUID=$uuid     /DeepLearningLab   auto    rw,user,auto    0    0 >> /etc/fstab
