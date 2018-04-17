@@ -29,7 +29,7 @@ Follow the instructions from [here](https://help.github.com/articles/generating-
  git clone git@github.com:marcelaldecoa/DevMeetingKeras.git
  
  ```
-## Configure Anaconda and CUDA
+## Configure NVIDIA Drivers, CUDA Toolkit, cuDNN, TensorFlow and Keras
 
 Run the bash script [setup01.sh](https://github.com/marcelaldecoa/DevMeetingKeras/blob/master/setup01.sh).
 
