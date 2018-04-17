@@ -69,7 +69,7 @@
             "value": "1024"
         },
         "customData": {
-            "value": "#!/bin/bash\n(\necho d # Delete existing partition table\necho n # Add a new partition\necho p # Primary partition\necho 1 # Partition number\necho   # First sector (Accept default)\necho   # Last sector (Accept default)\necho w # Write changes\n) | sudo fdisk /dev/sdc\n\n# Write the file system\nsudo mkfs -t ext4 /dev/sdc1\n\n# Create the DeepLearningLab directory\nsudo mkdir /DeepLearningLab\n# Mount disk to the new directory\nsudo mount /dev/sdc1 /DeepLearningLab\nsudo -s\nuuid=$(sudo -i blkid /dev/sdc1 | grep -oP "[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}")\necho UUID=$uuid     /DeepLearningLab   auto    rw,user,auto    0    0 >> /etc/fstab"
+            "value": "#!/bin/bash\n(\necho d # Delete existing partition table\necho n # Add a new partition\necho p # Primary partition\necho 1 # Partition number\necho   # First sector (Accept default)\necho   # Last sector (Accept default)\necho w # Write changes\n) | sudo fdisk /dev/sdc\n\n# Write the file system\nsudo mkfs -t ext4 /dev/sdc1\n\n# Create the DeepLearningLab directory\nsudo mkdir /DeepLearningLab\n# Mount disk to the new directory\nsudo mount /dev/sdc1 /DeepLearningLab"
         }
     }
 }
