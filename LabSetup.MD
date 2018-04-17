@@ -44,4 +44,14 @@ After reboot run the bash script [setup02.sh](https://github.com/marcelaldecoa/D
 cd /DeepLearningLab/deep-learning-projects/DevMeetingKeras/
 sudo -s
 bash setup02.sh
+exit
+```
+
+## Testing Keras
+```bash
+# Testing Keras
+MNIST_FILE=mnist_cnn.py
+wget https://raw.githubusercontent.com/keras-team/keras/master/examples/${MNIST_FILE}
+python ${MNIST_FILE}
+rm -f ${MNIST_FILE}
 ```
