@@ -17,18 +17,18 @@ rm -f ${ANACONDA_BASH_FILE}
 # Install CUDA Toolkit 9.0
 printf "Installing ${GREEN}CUDA Toolkit 9.0${NC} ...\n"
 cd NVIDIA/
-dpkg -i cuda-repo-ubuntu1604-9-0-local_9.0.176-1_amd64.deb
-apt-get update
-apt-get install cuda -y
-dpkg -i cuda-repo-ubuntu1604-9-0-local-cublas-performance-update-2_1.0-1_amd64.deb
-apt-get update
-apt-get upgrade cuda -y
+sudo dpkg -i cuda-repo-ubuntu1604-9-0-local_9.0.176-1_amd64.deb
+sudo apt-get update
+sudo apt-get install cuda -y
+sudo dpkg -i cuda-repo-ubuntu1604-9-0-local-cublas-performance-update-2_1.0-1_amd64.deb
+sudo apt-get update
+sudo apt-get upgrade cuda -y
 
 # Install cuDNN
 printf "Installing ${GREEN}cuDNN${NC} ...\n"
-dpkg -i libcudnn7_7.0.5.15-1+cuda9.0_amd64
-dpkg -i libcudnn7-dev_7.0.5.15-1+cuda9.0_amd64
-dpkg -i libcudnn7-doc_7.0.5.15-1+cuda9.0_amd64
+sudo dpkg -i libcudnn7_7.0.5.15-1+cuda9.0_amd64
+sudo dpkg -i libcudnn7-dev_7.0.5.15-1+cuda9.0_amd64
+sudo dpkg -i libcudnn7-doc_7.0.5.15-1+cuda9.0_amd64
 
 # Testing cuDNN
 printf "Testing ${BLUE}cuDNN${NC} ...\n"
@@ -40,10 +40,10 @@ cd ~
 
 # Install TensorFlow
 printf "Installing ${GREEN}TensorFlow${NC} ...\n"
-apt-get install libcupti-dev -y
-pip install tensorflow-gpu
+sudo apt-get install libcupti-dev -y
+sudo pip install tensorflow-gpu
 
 # Install Keras
 printf "Installing ${GREEN}Keras${NC} ...\n"
-pip install h5py
-pip install keras
+sudo pip install h5py
+sudo pip install keras
