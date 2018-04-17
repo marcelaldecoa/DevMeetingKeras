@@ -14,10 +14,6 @@ echo 'export PATH="$HOME/anaconda3/bin:$PATH"' >> ~/.bashrc
 source ~/.bashrc
 rm -f ${ANACONDA_BASH_FILE}
 
-# Upgrade PIP
-printf "Upgrading ${BLUE}PIP${NC} ...\n"
-pip install --upgrade pip
-
 # Install CUDA Toolkit 9.0
 printf "Installing ${GREEN}CUDA Toolkit 9.0${NC} ...\n"
 cd NVIDIA/
@@ -47,10 +43,6 @@ printf "Installing ${GREEN}TensorFlow${NC} ...\n"
 apt-get install libcupti-dev -y
 pip install tensorflow-gpu
 
-# FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated
-# Requires numpy downgrade
-pip install numpy==1.13.0
-
 # Install Keras
 printf "Installing ${GREEN}Keras${NC} ...\n"
 pip install h5py
@@ -59,6 +51,6 @@ pip install keras
 # Testing Keras
 printf "Testing ${BLUE}Keras with MNIST${NC} ...\n"
 MNIST_FILE=mnist_cnn.py
-wgethttps://raw.githubusercontent.com/keras-team/keras/master/examples/${MNIST_FILE}
+wget https://raw.githubusercontent.com/keras-team/keras/master/examples/${MNIST_FILE}
 python ${MNIST_FILE}
 rm -f ${MNIST_FILE}
