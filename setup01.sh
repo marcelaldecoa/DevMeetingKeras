@@ -38,7 +38,7 @@ apt-get update
 apt-get install cuda-drivers -y
 
 # Add data disk to /etc/fstab to ensure it will automatic mount during boot 
-printf "Adding data disk to ${BRUE}/etc/fstab${NC} ...\n"
+printf "Adding data disk to ${BLUE}/etc/fstab${NC} ...\n"
 uuid=$(sudo -i blkid /dev/sdc1 | grep -oP "[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}")
 echo UUID=$uuid     /DeepLearningLab   auto    rw,user,auto    0    0 >> /etc/fstab
 
