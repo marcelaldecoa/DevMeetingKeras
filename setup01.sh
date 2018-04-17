@@ -40,6 +40,10 @@ apt-key add /var/nvidia-diag-driver-local-repo-384.125/7fa2af80.pub
 apt-get update
 apt-get install cuda-drivers -y
 
+# Add disk to /etc/fstab to ensure properly mount during boot 
+uuid=$(sudo -i blkid /dev/sdc1 | grep -oP "[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}")
+echo UUID=$uuid     /DeepLearningLab   auto    rw,user,auto    0    0 >> /etc/fstab
+
 # Reboot is required
 printf "The VM will ${BLUE}reboot${NC} to complete the installation ...\n"
 reboot
