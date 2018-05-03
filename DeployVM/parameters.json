@@ -1,0 +1,75 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "eastus"
+        },
+        "virtualMachineName": {
+            "value": "DeepLearningLab-LinuxVM"
+        },
+        "virtualMachineSize": {
+            "value": "Standard_NC6"
+        },
+        "adminUsername": {
+            "value": "maalde"
+        },
+        "virtualNetworkName": {
+            "value": "DeepLearningLab-vnet"
+        },
+        "networkInterfaceName": {
+            "value": "DeepLearningLab-LinuxVM-nic"
+        },
+        "networkSecurityGroupName": {
+            "value": "DeepLearningLab-LinuxVM-nsg"
+        },
+        "adminPublicKey": {
+            "value": "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAiRqyi/2ca/Tb55DgusOzgTP2Geqt50flcG8snsuEohZCF5ff64dfVBnbXxOgXQrRkZFuVJkbih8ky8yZYiLZTHqmc9MSLdZWPDbKTKifKgnEOPkU3NmXQRo3KH9KBFJ3uUQyVXTTCTGNWLf37PHrGRo6c8j5jZcK8Hj3Ya8eUDurqXfezvMTsVoMmgwsUN2x+ZuWK6gpOPRYQNK8DtTjBQs7DfWwnO5XcRrtt2HWL6SgM5R5YjL4eMg69D8Kj+lZ5NYsDzj87OtmmyF7y/YdT+xgphZHAJXt2m290hvQpWtskVsSjBuimvgt+eWg34jiv19ADkZUrw2MeKfq3g/Q7w=="
+        },
+        "storageAccountName": {
+            "value": "deeplearninglabdisks"
+        },
+        "storageAccountType": {
+            "value": "Standard_LRS"
+        },
+        "addressPrefix": {
+            "value": "10.0.0.0/24"
+        },
+        "subnetName": {
+            "value": "default"
+        },
+        "subnetPrefix": {
+            "value": "10.0.0.0/24"
+        },
+        "publicIpAddressName": {
+            "value": "DeepLearningLab-LinuxVM-ip"
+        },
+        "publicIpAddressType": {
+            "value": "Static"
+        },
+        "publicIpAddressSku": {
+            "value": "Basic"
+        },
+        "autoShutdownStatus": {
+            "value": "Enabled"
+        },
+        "autoShutdownTime": {
+            "value": "02:00"
+        },
+        "autoShutdownTimeZone": {
+            "value": "E. South America Standard Time"
+        },
+        "autoShutdownNotificationStatus": {
+            "value": "Disabled"
+        },
+        "sizeOfOSDiskInGB": {
+            "value": "120"
+        },
+        "sizeOfDataDiskInGB": {
+            "value": "1024"
+        },
+        "customData": {
+            "value": "#!/bin/bash\n(\necho d # Delete existing partition table\necho n # Add a new partition\necho p # Primary partition\necho 1 # Partition number\necho   # First sector (Accept default)\necho   # Last sector (Accept default)\necho w # Write changes\n) | sudo fdisk /dev/sdc\n\n# Write the file system\nsudo mkfs -t ext4 /dev/sdc1\n\n# Create the DeepLearningLab directory\nsudo mkdir /DeepLearningLab\n# Mount disk to the new directory\nsudo mount /dev/sdc1 /DeepLearningLab"
+        }
+    }
+}
