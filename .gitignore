@@ -102,3 +102,9 @@ ENV/
 
 # NVIDIA files
 NVIDIA/
+
+# Deep Learning VM Lab
+tensorboard_log/
+.ipynb_checkpoints/
+datasets/
+cats_and_dogs_small/
